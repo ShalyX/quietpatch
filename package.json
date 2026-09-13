@@ -1,0 +1,26 @@
+{
+  "name": "quietpatch",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/web",
+    "apps/api",
+    "contract"
+  ],
+  "overrides": {
+    "@midnight-ntwrk/onchain-runtime-v3": "3.0.0"
+  },
+  "scripts": {
+    "dev:web": "npm --workspace apps/web run dev",
+    "dev:api": "npm --workspace apps/api run dev",
+    "build": "npm --workspace apps/web run build && npm --workspace apps/api run build",
+    "typecheck": "npm --workspace apps/web run typecheck && npm --workspace apps/api run typecheck",
+    "test": "npm --workspace apps/web run test && npm --workspace apps/api run test && npm --workspace contract run test",
+    "compile:contract": "node scripts/compile-contract.mjs",
+    "prepare:web-assets": "node scripts/prepare-web-assets.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

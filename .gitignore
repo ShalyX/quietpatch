@@ -1,0 +1,22 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+coverage/
+*.log
+*.tsbuildinfo
+apps/api/data/
+apps/web/public/midnight/
+contract/src/managed/
+
+# Local Midnight state
+.midnight-state.json
+.compact/
+
+# Local presentation build and validation output
+.codex-build/
+.codex-finalizer/
+
+# Superseded submission deck exports; v4 is the reviewed deck.
+deliverables/QuietPatch-Wave1-Submission-Deck-v[1-3].pptx

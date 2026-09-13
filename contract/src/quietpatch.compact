@@ -1,0 +1,130 @@
+// QuietPatch privacy-preserving vulnerability disclosure contract.
+// SPDX-License-Identifier: Apache-2.0
+
+pragma language_version 0.23;
+
+import CompactStandardLibrary;
+
+export enum BountyStatus {
+  NONE,
+  OPEN,
+  CLOSED
+}
+
+export enum ReportStatus {
+  NONE,
+  SUBMITTED,
+  ACCEPTED,
+  REJECTED,
+  PAID,
+  DISCLOSED
+}
+
+export ledger bountyStatus: BountyStatus;
+export ledger maintainer: Bytes<32>;
+export ledger bountyId: Bytes<32>;
+export ledger submissionDeadline: Uint<64>;
+export ledger minimumSeverity: Uint<8>;
+export ledger rewardAmount: Uint<32>;
+export ledger reportStatus: ReportStatus;
+export ledger reportCommitment: Bytes<32>;
+export ledger reportResearcher: Bytes<32>;
+export ledger reportSeverityPass: Boolean;
+export ledger disclosureDigest: Bytes<32>;
+
+witness maintainerSecretKey(): Bytes<32>;
+witness researcherSecretKey(): Bytes<32>;
+witness privateReportDigest(): Bytes<32>;
+witness privateReportNonce(): Bytes<32>;
+witness privateSeverity(): Uint<8>;
+
+constructor() {
+  bountyStatus = BountyStatus.NONE;
+  reportStatus = ReportStatus.NONE;
+  submissionDeadline = 0;
+  minimumSeverity = 0;
+  rewardAmount = 0;
+  reportSeverityPass = false;
+  disclosureDigest = pad(32, "");
+}
+
+export circuit createBounty(
+  newBountyId: Bytes<32>,
+  newMinimumSeverity: Uint<8>,
+  newRewardAmount: Uint<32>,
+  newSubmissionDeadline: Uint<64>
+): [] {
+  assert(bountyStatus == BountyStatus.NONE, "Bounty already exists");
+  assert(newMinimumSeverity > 0, "Severity threshold must be positive");
+  assert(newRewardAmount > 0, "Reward must be positive");
+  assert(blockTimeLt(disclose(newSubmissionDeadline)), "Deadline must be in the future");
+
+  bountyId = disclose(newBountyId);
+  submissionDeadline = disclose(newSubmissionDeadline);
+  minimumSeverity = disclose(newMinimumSeverity);
+  rewardAmount = disclose(newRewardAmount);
+  maintainer = disclose(derivePublicKey(maintainerSecretKey(), newBountyId));
+  bountyStatus = BountyStatus.OPEN;
+}
+
+export circuit closeBounty(): [] {
+  assert(bountyStatus == BountyStatus.OPEN, "Bounty is not open");
+  assert(maintainer == derivePublicKey(maintainerSecretKey(), bountyId), "Caller is not the maintainer");
+  bountyStatus = BountyStatus.CLOSED;
+}
+
+export circuit submitReport(reportCommitmentInput: Bytes<32>): [] {
+  assert(bountyStatus == BountyStatus.OPEN, "Bounty is not open");
+  assert(reportStatus == ReportStatus.NONE, "A report already exists");
+  assert(blockTimeLt(submissionDeadline), "Submission deadline passed");
+
+  const severity = privateSeverity();
+  const digest = privateReportDigest();
+  const nonce = privateReportNonce();
+  const expectedCommitment = persistentHash<Vector<5, Bytes<32>>>([
+    pad(32, "quietpatch:report:"),
+    bountyId,
+    digest,
+    nonce,
+    severity as Field as Bytes<32>
+  ]);
+
+  assert(severity >= minimumSeverity, "Report severity is below the threshold");
+  assert(expectedCommitment == reportCommitmentInput, "Report commitment is invalid");
+
+  reportCommitment = disclose(reportCommitmentInput);
+  reportResearcher = disclose(derivePublicKey(researcherSecretKey(), reportCommitmentInput));
+  reportSeverityPass = disclose(true);
+  reportStatus = ReportStatus.SUBMITTED;
+}
+
+export circuit acceptReport(): [] {
+  assert(reportStatus == ReportStatus.SUBMITTED, "Report is not awaiting review");
+  assert(maintainer == derivePublicKey(maintainerSecretKey(), bountyId), "Caller is not the maintainer");
+  reportStatus = ReportStatus.ACCEPTED;
+}
+
+export circuit rejectReport(): [] {
+  assert(reportStatus == ReportStatus.SUBMITTED, "Report is not awaiting review");
+  assert(maintainer == derivePublicKey(maintainerSecretKey(), bountyId), "Caller is not the maintainer");
+  reportStatus = ReportStatus.REJECTED;
+}
+
+export circuit claimPayout(): [] {
+  assert(reportStatus == ReportStatus.ACCEPTED, "Report is not accepted");
+  assert(reportResearcher == derivePublicKey(researcherSecretKey(), reportCommitment), "Caller is not the researcher");
+  reportStatus = ReportStatus.PAID;
+}
+
+export circuit publishDisclosure(newDisclosureDigest: Bytes<32>): [] {
+  assert(reportStatus == ReportStatus.ACCEPTED || reportStatus == ReportStatus.PAID, "Report is not ready for disclosure");
+  const isMaintainer = maintainer == derivePublicKey(maintainerSecretKey(), bountyId);
+  const isResearcher = reportResearcher == derivePublicKey(researcherSecretKey(), reportCommitment);
+  assert(disclose(isMaintainer || isResearcher), "Caller is not authorised");
+  disclosureDigest = disclose(newDisclosureDigest);
+  reportStatus = ReportStatus.DISCLOSED;
+}
+
+export circuit derivePublicKey(secretKey: Bytes<32>, context: Bytes<32>): Bytes<32> {
+  return persistentHash<Vector<3, Bytes<32>>>([pad(32, "quietpatch:pk:"), context, secretKey]);
+}

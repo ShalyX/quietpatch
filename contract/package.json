@@ -1,0 +1,20 @@
+{
+  "name": "@quietpatch/contract",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "compact": "node ../../scripts/compile-contract.mjs",
+    "build": "tsc --noEmit",
+    "test": "node --test src/*.test.mjs"
+  },
+  "dependencies": {
+    "@midnight-ntwrk/compact-runtime": "0.16.0",
+    "@midnight-ntwrk/onchain-runtime-v3": "3.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
