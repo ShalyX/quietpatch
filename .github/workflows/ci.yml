@@ -27,8 +27,14 @@ jobs:
           mkdir -p "$HOME/.local/bin"
           unzip -q /tmp/compact.zip -d "$HOME/.local/bin"
           chmod +x "$HOME/.local/bin/compactc"
-          ln -s compactc "$HOME/.local/bin/compact"
-          "$HOME/.local/bin/compact" compile --version
+          printf '%s\n' \
+            '#!/usr/bin/env bash' \
+            'set -euo pipefail' \
+            'if [ "${1:-}" = "compile" ]; then shift; fi' \
+            'exec "$HOME/.local/bin/compactc" "$@"' \
+            > "$HOME/.local/bin/compact"
+          chmod +x "$HOME/.local/bin/compact"
+          "$HOME/.local/bin/compactc" --help > /dev/null
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
       - run: npm ci
