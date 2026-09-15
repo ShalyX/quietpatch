@@ -15,9 +15,20 @@ jobs:
           node-version: 22
           cache: npm
 
-      - uses: midnightntwrk/setup-compact-action@v1
-        with:
-          compact-version: '0.31.1'
+      # Download the pinned release asset directly. The setup action resolves releases
+      # through the GitHub API, which can fail on hosted-runner rate limits.
+      - name: Install Compact 0.31.1
+        env:
+          COMPACT_VERSION: 0.31.1
+        run: |
+          curl --fail --location --retry 3 --retry-all-errors \
+            --output /tmp/compact.zip \
+            "https://github.com/midnightntwrk/compact/releases/download/compactc-v${COMPACT_VERSION}/compactc_v${COMPACT_VERSION}_x86_64-unknown-linux-musl.zip"
+          mkdir -p "$HOME/.local/bin"
+          unzip -q /tmp/compact.zip -d "$HOME/.local/bin"
+          chmod +x "$HOME/.local/bin/compact"
+          "$HOME/.local/bin/compact" compile --version
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
       - run: npm ci
       - run: npm run compile:contract
