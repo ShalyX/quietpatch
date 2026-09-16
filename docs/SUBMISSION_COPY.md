@@ -47,7 +47,7 @@ The submitted demo uses synthetic reports and a test payout record. With Lace co
 - Network: Midnight Undeployed, using the project test environment (not Preprod)
 - Contract address: `2542183b91bd41aa2c8715abee6d4def0e075776abfa414826e6ac7ec75863a6`
 - Verified final report state: `DISCLOSED`
-- Submitted commit: `67e7d45` (`feat: add QuietPatch product identity assets`)
+- Submitted commit: `2ca85ce` (`docs: point submission to public preview`)
 
 The public preview is a static build of the browser client. The verified Midnight Undeployed transaction flow remains tied to the local/VPS services used for the demo; do not describe the preview as a fully hosted live network deployment.
 
