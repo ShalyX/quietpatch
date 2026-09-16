@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">QuietPatch mark</title>
+  <desc id="desc">Two interrupted lines around a quiet seam, with one visible proof point.</desc>
+  <rect width="512" height="512" rx="96" fill="#F7F4ED"/>
+  <g fill="none" stroke="#17201D" stroke-linecap="round" stroke-width="30">
+    <path d="M118 142v228"/>
+    <path d="M394 142v228"/>
+    <path d="M118 256h104"/>
+    <path d="M290 256h104"/>
+  </g>
+  <circle cx="256" cy="256" r="14" fill="#C56D45"/>
+</svg>
