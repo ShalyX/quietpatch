@@ -37,7 +37,7 @@ The contract checks report binding, severity threshold, deadline, one-report sta
 ## Submission links
 
 - **Repository:** https://github.com/ShalyX/quietpatch
-- **Public preview:** https://dist-b1x373fmf-shalyxs-projects.vercel.app
+- **Public preview:** https://dist-gamma-orcin-51.vercel.app
 - **Deck:** `deliverables/QuietPatch-Wave1-Submission-Deck-v4.pptx`
 - **Demo video:** record or upload the 70-second final-state walkthrough in `docs/VIDEO_CAPTURE.md`, then add its public URL.
 

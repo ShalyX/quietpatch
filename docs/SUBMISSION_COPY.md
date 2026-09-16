@@ -42,7 +42,7 @@ The submitted demo uses synthetic reports and a test payout record. With Lace co
 ## Links and evidence
 
 - Repository: https://github.com/ShalyX/quietpatch
-- Public preview: https://dist-b1x373fmf-shalyxs-projects.vercel.app
+- Public preview: https://dist-gamma-orcin-51.vercel.app
 - Demo video: `[video URL]`
 - Network: Midnight Undeployed, using the project test environment (not Preprod)
 - Contract address: `2542183b91bd41aa2c8715abee6d4def0e075776abfa414826e6ac7ec75863a6`
