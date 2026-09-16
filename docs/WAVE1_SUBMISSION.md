@@ -36,9 +36,12 @@ The contract checks report binding, severity threshold, deadline, one-report sta
 
 ## Submission links
 
-- **Repository:** add the public GitHub URL after publishing the reviewed commit.
+- **Repository:** https://github.com/ShalyX/quietpatch
+- **Public preview:** https://dist-b1x373fmf-shalyxs-projects.vercel.app
 - **Deck:** `deliverables/QuietPatch-Wave1-Submission-Deck-v4.pptx`
 - **Demo video:** record or upload the 70-second final-state walkthrough in `docs/VIDEO_CAPTURE.md`, then add its public URL.
+
+The preview is a public static build of the browser client. The verified Midnight Undeployed transaction flow uses the local/VPS services from the demo environment.
 
 ## Limits to state clearly
 
@@ -49,7 +52,7 @@ The contract checks report binding, severity threshold, deadline, one-report sta
 
 ## Personal submission steps
 
-1. Publish the repository, add the GitHub topic `midnightntwrk`, and keep the Apache-2.0 license.
+1. Confirm the published repository, GitHub topic `midnightntwrk`, and Apache-2.0 license.
 2. Upload the deck and demo video somewhere that opens without a login.
 3. Open Akindo as the registered entrant, paste the project description, add the public URLs, and check every fact against this file.
 4. Submit the entry yourself before the Wave 1 deadline.

@@ -1,6 +1,6 @@
 # QuietPatch submission copy
 
-Replace bracketed values only after the final deployment and recording. Keep the facts aligned with the submitted commit.
+Keep the facts aligned with the submitted commit. The video URL remains the only missing external link.
 
 ## Project name
 
@@ -41,12 +41,15 @@ The submitted demo uses synthetic reports and a test payout record. With Lace co
 
 ## Links and evidence
 
-- Repository: `[public GitHub URL]`
+- Repository: https://github.com/ShalyX/quietpatch
+- Public preview: https://dist-b1x373fmf-shalyxs-projects.vercel.app
 - Demo video: `[video URL]`
 - Network: Midnight Undeployed, using the project test environment (not Preprod)
 - Contract address: `2542183b91bd41aa2c8715abee6d4def0e075776abfa414826e6ac7ec75863a6`
 - Verified final report state: `DISCLOSED`
-- Submitted commit: `[git commit SHA after publication]`
+- Submitted commit: `67e7d45` (`feat: add QuietPatch product identity assets`)
+
+The public preview is a static build of the browser client. The verified Midnight Undeployed transaction flow remains tied to the local/VPS services used for the demo; do not describe the preview as a fully hosted live network deployment.
 
 ## Limits
 
